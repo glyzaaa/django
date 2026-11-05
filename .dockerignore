@@ -1,0 +1,10 @@
+.venv
+.qa*
+.git
+.env
+database/data/*
+staticfiles
+**/__pycache__
+**/*.pyc
+package.json
+scripts/preview_qa.py

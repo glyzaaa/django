@@ -1,0 +1,74 @@
+{% extends 'base.html' %}{% block title %}Activity guide{% endblock %}{% block breadcrumb %}Activity guide{% endblock %}
+{% block content %}
+<section class="page-heading">
+<div><p class="eyebrow">YOUR CODE CHANGES THE WEBSITE</p><h1>Build the behavior<span>.</span></h1><p class="intro">Remix this Django website, fix FIFO service, and replace flat workflow storage with linked nodes.</p>
+</div>
+</section>
+<section class="guide-intro surface"><h2>What the full application already provides</h2><p>Django accounts, role permissions, team invitations, request assignments and notes, a dashboard, reports and CSV export, board/list views, search, archive/restore, activity records, and database persistence.</p><p>Focus your data-structure work on the two files below. Keep the real pages connected to them.</p>
+</section>
+<div class="guide-layout">
+<section class="surface" id="queue-task"><p class="eyebrow">ACTIVITY A · LECTURE 1</p><h2>Queue behavior</h2><p><code>backend/dsa/queue.py</code></p><p>The runnable starter selects the newest waiting item. Make it a FIFO queue so the earliest waiting item leaves first.</p>
+<ol class="instructions">
+<li>Keep <code>ServiceQueue</code> and its public method names.
+</li>
+<li>Fix <code>dequeue()</code> and <code>peek()</code>. Use efficient end operations.
+</li>
+<li>Keep <code>to_list()</code> in arrival order for saving and reloading.
+</li>
+<li>Create A, B and C. Join them in that order. Serve A, B, C, refreshing between requests.
+</li>
+<li>Run <code>CHECK_QUEUE.bat</code>.
+</li>
+</ol>
+<a class="button secondary" href="{% url 'workspace:queue' %}">Open service queue ↗</a>
+</section>
+<section class="surface" id="linked-task"><p class="eyebrow purple">ACTIVITY B · LECTURE 2</p><h2>Singly linked storage</h2><p><code>backend/dsa/singly_linked_list.py</code></p><p>The starter's methods use a Python list. Replace that backing storage with real Node objects and next references.</p>
+<ol class="instructions">
+<li>Initialize <code>head</code>, <code>tail</code> and a cached <code>_size</code>.
+</li>
+<li>Implement the existing insertion, search, get and removal methods.
+</li>
+<li>Handle an empty list, one node, duplicates and invalid indices.
+</li>
+<li>Follow <code>next</code> until <code>None</code> for traversal.
+</li>
+<li>Run <code>CHECK_LINKED_LIST.bat</code> and inspect the real links on the Workflow page.
+</li>
+</ol>
+<a class="button secondary" href="{% url 'workspace:workflow' %}">Open workflow ↗</a>
+</section>
+</div>
+<section class="surface guide-section"><h2>Two checks with different jobs</h2>
+<div class="table-wrap">
+<table class="data-table">
+<thead>
+<tr><th>Command</th><th>What it checks</th><th>Untouched starter</th>
+</tr>
+</thead>
+<tbody>
+<tr><td><code>RUN_TESTS.bat</code></td><td>Django pages, forms, persistence, isolation and real class calls</td><td>Should pass</td>
+</tr>
+<tr><td><code>CHECK_QUEUE.bat</code></td><td>FIFO order, peek, empty cases and actual web selections</td><td>Some failures expected</td>
+</tr>
+<tr><td><code>CHECK_LINKED_LIST.bat</code></td><td>Method behavior and actual Node links</td><td>Structure failures expected</td>
+</tr>
+<tr><td><code>CHECK_ACTIVITY.bat</code></td><td>Both data-structure goals together</td><td>Failures expected until completed</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A failed goal check is not the same as a broken installation. Keep the goal tests unchanged.</p>
+</section>
+<section class="guide-section"><h2>Where each layer lives</h2>
+<div class="layer-grid">
+<div><strong>Frontend</strong><code>frontend/templates/</code><code>frontend/static/app.css</code><p>Page layouts, content, interactions and responsive styles.</p>
+</div>
+<div><strong>Backend</strong><code>backend/workspace/views.py</code><code>backend/workspace/services.py</code><p>URL handling, validation, student-class calls and transactions.</p>
+</div>
+<div><strong>Database</strong><code>database/models.py</code><code>database/migrations/</code><p>Django models and SQLite persistence. Generated data stays in <code>database/data/</code>.</p>
+</div>
+</div>
+</section>
+<section class="surface guide-section"><h2>Submission and explanation</h2><p>Submit the source, setup README, your website concept, before/after evidence for both activities, checker output and a contribution table. Be ready to trace an HTML form through the Django view, the student method and SQLite.</p><p>Changing visible order or drawing arrows is insufficient. The queue must determine the actual served item, and the linked list must store its values in real nodes.</p><p>Full instructions, rubric and lecture slide mapping: <code>docs/STUDENT_ACTIVITY.md</code>. Read-only state inspection: <a href="{% url 'workspace:state_api' %}"><code>/api/state/</code></a>.</p>
+</section>
+{% endblock %}

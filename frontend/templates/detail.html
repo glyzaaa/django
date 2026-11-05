@@ -1,0 +1,83 @@
+{% extends 'base.html' %}{% load ui %}{% block title %}{{ item.reference }}{% endblock %}{% block breadcrumb %}<a href="{% url 'workspace:board' %}">Requests</a> / {{ item.reference }}{% endblock %}{% block content %}<a class="back-link" href="{% url 'workspace:board' %}">← All requests</a>
+<section class="page-heading">
+<div><p class="eyebrow">{{ item.reference }} <span class="status {{ item.status }}">{{ item.get_status_display }}</span>{% if in_queue %}<span class="soft-label">In service queue</span>{% endif %}</p><h1 class="detail-title">{{ item.title }}</h1><p class="intro">Created {{ item.created_at|date:'M j, Y' }} by {{ item.created_by.display_name|default:'System' }}</p>
+</div>
+{% if can_edit %}<a class="button secondary" href="{% url 'workspace:edit' item.id %}">Edit request ↗</a>{% endif %}
+</section>
+<div class="detail-layout">
+<div>
+<section class="surface"><h2>Description</h2>
+<div class="prose request-description">{{ item.description|linebreaks|default:'<p>No description provided.</p>' }}
+</div>
+</section>
+<section class="surface">
+<div class="section-top"><h2>Team conversation</h2><span class="count-pill">{{ comments|length }}</span>
+</div>
+{% for comment in comments %}
+<article class="comment"><span class="avatar">{{ comment.author.initial|default:'?' }}</span>
+<div>
+<div class="comment-heading"><strong>{{ comment.author.display_name|default:'Former member' }}</strong><time>{{ comment.created_at|date:'M j, g:i a' }}</time>
+</div>
+<div class="prose">{{ comment.body|linebreaks }}
+</div>
+</div>
+</article>
+{% empty %}<p class="empty-small">Keep context close to the work. Add the first team note.</p>{% endfor %}{% if can_edit %}
+<form method="post" class="note-form" novalidate>{% csrf_token %}{% include 'includes/form_fields.html' %}<button class="button primary" type="submit">Add team note</button>
+</form>
+{% endif %}
+</section>
+<section class="surface"><h2>Request history</h2>{% for event in ticket_events %}
+<div class="event-row"><span class="event-dot"></span>
+<div><p>{{ event.summary }}</p><small>{{ event.actor.display_name|default:'System' }} · {{ event.created_at|date:'M j, g:i a' }}</small>
+</div>
+</div>
+{% empty %}<p class="empty-small">No changes recorded yet.</p>{% endfor %}
+</section>
+</div>
+<aside>
+<section class="surface detail-properties"><h2>Details</h2>
+<dl>
+<dt>Status
+</dt>
+<dd><span class="status {{ item.status }}">{{ item.get_status_display }}</span>
+</dd>
+<dt>Priority
+</dt>
+<dd><span class="priority {{ item.priority }}">{{ item.get_priority_display }}</span>
+</dd>
+<dt>Assigned to
+</dt>
+<dd>{{ item.assignee.display_name|default:'Unassigned' }}
+</dd>
+<dt>Category
+</dt>
+<dd>{{ item.category }}
+</dd>
+<dt>Due date
+</dt>
+<dd {% if item.overdue %}class="overdue"{% endif %}>{{ item.due_date|date:'M j, Y'|default:'No due date' }}
+</dd>
+<dt>Requester
+</dt>
+<dd>{{ item.requester_email|default:'Not specified' }}
+</dd>
+<dt>Last updated
+</dt>
+<dd>{{ item.updated_at|timesince }} ago
+</dd>
+</dl>
+{% if can_edit %}
+<form method="post" action="{% url 'workspace:move' item.id %}" class="status-form">{% csrf_token %}<label for="status">Change status</label><select name="status" id="status">{% for key,label in statuses %}<option value="{{ key }}" {% if item.status == key %}selected{% endif %}>{{ label }}</option>{% endfor %}</select><button class="button secondary" type="submit">Update status</button>
+</form>
+{% if item.status == 'todo' and not in_queue %}
+<form method="post" action="{% url 'workspace:queue_join' item.id %}">{% csrf_token %}<button class="button primary full-width" type="submit">Add to service queue</button>
+</form>
+{% endif %}
+<form method="post" action="{% url 'workspace:archive_item' item.id %}" data-confirm="Archive this request? You can restore it from Archive.">{% csrf_token %}<button class="button danger-quiet full-width" type="submit">Archive request</button>
+</form>
+{% endif %}
+</section>
+</aside>
+</div>
+{% endblock %}

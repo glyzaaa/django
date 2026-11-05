@@ -1,0 +1,30 @@
+# Place in the nginx http context; replace the domain and certificate paths.
+limit_req_zone $binary_remote_addr zone=desk_login:10m rate=10r/m;
+upstream flowdesk_app { server 127.0.0.1:8000; }
+server {
+    listen 80;
+    server_name desk.example.edu;
+    return 301 https://$host$request_uri;
+}
+server {
+    listen 443 ssl;
+    server_name desk.example.edu;
+    ssl_certificate /etc/letsencrypt/live/desk.example.edu/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/desk.example.edu/privkey.pem;
+    client_max_body_size 128k;
+    location /accounts/login/ {
+        limit_req zone=desk_login burst=5 nodelay;
+        limit_req_status 429;
+        proxy_pass http://flowdesk_app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-For $remote_addr;
+    }
+    location / {
+        proxy_pass http://flowdesk_app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_read_timeout 50s;
+    }
+}

@@ -1,0 +1,31 @@
+UPDATE YOUR EXISTING FLOWDESK APP TO THE DARK DESIGN
+
+Your current folder contains manage.py, backend, frontend, database and config.
+
+1. Stop the running Flowdesk server with Ctrl+C.
+2. Back up your existing database/data folder and any code you changed.
+   If you completed the exercises, keep copies of backend/dsa/queue.py and
+   backend/dsa/singly_linked_list.py before replacing source files.
+3. Extract this new ZIP somewhere separate first.
+4. Copy ALL contents of the new Flowdesk-Django folder into your existing
+   Flowdesk-Django folder. Choose Replace for existing source files.
+   Copy the contents into that folder, not into another nested Flowdesk-Django.
+5. Keep your existing database/data files and .venv folder.
+   Restore your own completed exercise files after copying, if applicable.
+   The ZIP contains no runtime database, development key, or Python environment.
+6. In PowerShell inside your existing Flowdesk-Django folder, run:
+
+   .\START.bat --port 8001
+
+7. Open http://127.0.0.1:8001/ and sign in with your existing account.
+8. Press Ctrl+F5 once if the browser is showing cached styles.
+
+The database schema and dependencies have not changed for this design update.
+Copy backend/workspace/presentation.py and the updated views.py along with the
+frontend files: the new dashboard uses them to calculate its real chart data.
+Copying all source files as described above handles this together.
+
+New installation: extract the full project, run SETUP.bat, then START.bat.
+The queue/list student files retain the original unfinished baseline; if you
+already completed these exercises locally, retain your two completed files
+under backend/dsa/ when copying the update.

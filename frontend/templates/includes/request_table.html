@@ -1,0 +1,33 @@
+
+<div class="table-wrap">
+<table class="data-table">
+<thead>
+<tr><th>Request</th><th>Status</th><th>Priority</th><th>Assigned to</th><th>Due date</th><th><span class="sr-only">Open</span></th>
+</tr>
+</thead>
+<tbody>{% for item in items %}
+<tr data-item-id="{{ item.id }}"><td><a class="request-title" href="{% url 'workspace:detail' item.id %}"><span class="reference">{{ item.reference }}</span>{{ item.title }}</a><small>{{ item.category }}{% if item.id in queued_ids %} <span class="text-blue">· In service queue</span>{% endif %}</small></td><td><span class="status {{ item.status }}"><i></i>{{ item.get_status_display }}</span></td><td><span class="priority {{ item.priority }}">{{ item.get_priority_display }}</span></td><td>{% if item.assignee %}<span class="assignee"><span class="avatar mini">{{ item.assignee.initial }}</span>{{ item.assignee.display_name }}</span>{% else %}<span class="muted">Unassigned</span>{% endif %}</td><td><span {% if item.overdue %}class="overdue"{% endif %}>{{ item.due_date|date:'M j'|default:'—' }}</span>{% if item.overdue %}<small class="overdue">Overdue</small>{% endif %}</td><td><a class="row-arrow" aria-label="Open {{ item.reference }}" href="{% url 'workspace:detail' item.id %}">↗</a></td>
+</tr>
+{% empty %}
+<tr><td colspan="6">
+<div class="empty-state"><strong>No requests here yet.</strong><p>Create a request or adjust your filters.</p>{% if can_edit %}<a class="button primary small" href="{% url 'workspace:new' %}">Create request</a>{% endif %}
+</div>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+<div class="mobile-requests">{% for item in items %}
+<article class="mobile-request">
+<div class="mobile-request-top"><span class="reference">{{ item.reference }}</span><span class="status {{ item.status }}">{{ item.get_status_display }}</span>
+</div>
+<a class="mobile-request-title" href="{% url 'workspace:detail' item.id %}">{{ item.title }} <span aria-hidden="true">↗</span></a><p>{{ item.category }}{% if item.id in queued_ids %} <span class="text-blue">· In queue</span>{% endif %}</p>
+<div class="mobile-request-meta"><span class="priority {{ item.priority }}">{{ item.get_priority_display }}</span><span>{{ item.assignee.display_name|default:'Unassigned' }}</span>{% if item.due_date %}<span {% if item.overdue %}class="overdue"{% endif %}>Due {{ item.due_date|date:'M j' }}</span>{% endif %}
+</div>
+</article>
+{% empty %}
+<div class="empty-state"><strong>No requests here yet.</strong><p>Create a request or adjust your filters.</p>
+</div>
+{% endfor %}
+</div>

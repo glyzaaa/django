@@ -1,0 +1,30 @@
+FLOWDESK — DJANGO SERVICE DESK + QUEUE / SINGLY LINKED LIST LAB
+
+1. Extract the COMPLETE archive into a NEW folder.
+2. Windows: double-click SETUP.bat (once), then double-click START.bat.
+   macOS/Linux: sh setup.sh, then sh start.sh.
+3. Open http://127.0.0.1:8000/ and CREATE YOUR ACCOUNT.
+   Choose a team name. Sample requests are optional.
+4. Explore Overview, Requests, Service queue, Workflow, Reports, Team members.
+5. Open Learning lab for the two student tasks.
+
+Python 3.12 or 3.13 recommended; 3.10–3.14 supported.
+First setup needs internet for Django. Keep the terminal open.
+No Node, API key, cloud account or separate local database server is needed.
+There are no default accounts or shared passwords.
+
+STUDENTS EDIT:
+  backend/dsa/queue.py                -> FIFO queue
+  backend/dsa/singly_linked_list.py    -> real singly linked nodes
+
+FRONTEND: frontend/templates/ + frontend/static/
+BACKEND:  backend/accounts/ + backend/workspace/ + backend/dsa/
+DATABASE: database/models.py + database/migrations/ + database/data/
+
+RUN_TESTS.bat passes before students modify the algorithms.
+CHECK_QUEUE.bat and CHECK_LINKED_LIST.bat initially have intentional failures.
+RUN_ALL_CHECKS.bat passes after BOTH goals are complete.
+
+Read README.md and docs/STUDENT_ACTIVITY.md.
+Teachers: keep the separate instructor solution ZIP private.
+Production deployment instructions: docs/DEPLOYMENT.md.

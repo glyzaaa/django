@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.py[cod]
+.env
+database/data/*
+!database/data/.gitkeep
+staticfiles/
+*.log
+.DS_Store
+.vscode/
+.qa*/
+package.json
+scripts/preview_qa.py

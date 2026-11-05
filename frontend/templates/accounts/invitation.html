@@ -1,0 +1,15 @@
+{% extends 'base.html' %}{% block title %}Team invitation{% endblock %}{% block content %}
+<section class="surface invitation-card"><span class="success-mark">↗</span><p class="eyebrow">YOU'RE INVITED</p><h1>Join {{ invitation.workspace.name }}</h1><p class="intro">An invitation for {{ invitation.email }} to join as {{ invitation.get_role_display|lower }}.</p>{% if not invitation.pending %}
+<div class="inline-state warning">This invitation has expired, was revoked, or has already been used. Ask the owner for a new one.
+</div>
+{% elif not email_matches %}
+<div class="inline-state warning">You are signed in as {{ request.user.email }}. This invitation belongs to {{ invitation.email }}.
+</div>
+<form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="button secondary" type="submit">Sign out to switch accounts</button>
+</form>
+{% else %}
+<form method="post">{% csrf_token %}<button class="button primary" type="submit">Accept invitation</button>
+</form>
+{% endif %}
+</section>
+{% endblock %}
